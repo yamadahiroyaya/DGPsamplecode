@@ -42,7 +42,7 @@ class pcd_LSM:
 
     def L1_estimator_IRLS(self,n_0,c_0):
         x_k=np.asarray([self._pcd_x,self._pcd_y])
-        for num in range(1):
+        for num in range(5):
             e_k=np.asarray(np.dot(n_0,x_k)+c_0)
             w_e_k=1/abs(e_k)
             s=np.sum(w_e_k)
@@ -60,7 +60,6 @@ class pcd_LSM:
             for num in range(len(dev_x)):
                 weighted_M+=w_e_k[num]*np.array([[dev_x[num],dev_y[num]]]).T@np.array([[dev_x[num],dev_y[num]]])
             weighted_M/=s#分散共分散行列の計算
-            print(weighted_M)
             weight_mu,weight_n=LA.eig(weighted_M)
             weighted_mu=np.min(weight_mu)
             weighted_n=weight_n[:,np.argmin(weight_mu)]
@@ -70,7 +69,6 @@ class pcd_LSM:
             yrange = np.arange(-2, 10, 1)
             x, y = np.meshgrid(xrange, yrange)
             z = n_0[0]*x+n_0[1]*y+c_0
-            # z = 1 の等高線を描く
             plt.contour(x, y, z, [0])
             plt.scatter(self._pcd_x,self._pcd_y)
             plt.show()
