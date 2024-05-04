@@ -19,6 +19,8 @@ class pcd_LSM:
         plt.show()
 
     def LSM(self):
+        pcd=np.array([pcd_x[:],pcd_y[:]])
+        print(self._pcd1)
         M=np.cov(self._pcd1,bias=True)
         mu,n=LA.eig(M)
         min_mu=np.min(mu)
@@ -32,7 +34,7 @@ class pcd_LSM:
         z = min_n[0]*x+min_n[1]*y-np.dot(min_n,mean)
         # z = 1 の等高線を描く
         #plt.contour(x, y, z, [0])
-        plt.scatter(self._pcd_x,self._pcd_y)
+        #plt.scatter(self._pcd_x,self._pcd_y)
         #plt.show()
         n_0=np.array([min_n[0],min_n[1]])
         c_0=np.array(-np.dot(min_n,mean))
@@ -40,12 +42,10 @@ class pcd_LSM:
 
     def L1_estimator_IRLS(self,n_0,c_0):
         x_k=np.asarray([self._pcd_x,self._pcd_y])
-        for num in range(10):
+        for num in range(1):
             e_k=np.asarray(np.dot(n_0,x_k)+c_0)
             w_e_k=1/abs(e_k)
-            print(w_e_k.shape)
             s=np.sum(w_e_k)
-            #print(s)
             
             weighted_m=(np.sum(w_e_k*x_k,axis=1)/s).T#アダマール積
         
